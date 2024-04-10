@@ -30,16 +30,25 @@ class Scrapper {
       $id = $ids->item($linkIterator)->nodeValue;
       $title = $linkDom->getElementsByTagName('h2')->item(1)->nodeValue;
       $presentationType = $linkDom->getElementsByTagName('strong')->item(2)->nodeValue;
-      $divAuthors = $linkXPath->query("//div[contains(@class, 'authors-wrapper')]//abbr");
 
-      foreach ($divAuthors as $author)
+      $duplicatedAuthors = $linkXPath->query("//div[contains(@class, 'authors-wrapper')]//abbr");
 
+      $authorsQuantity = $duplicatedAuthors->length / 2;
+      $authors = [];
+
+      for($i = 0; $i < $authorsQuantity; $i++) {
+          $authors[] = $duplicatedAuthors->item($i)->nodeValue;
+      }
 
       echo "\nId: " . $id . "\n";
       echo "Title: " . $title . "\n";
       echo "Presentation Type: " . $presentationType . "\n";
-      echo "Authors: " . $divAuthors->item(1)->textContent . "\n\n";
+      echo "Authors: ";
+      foreach ($authors as $author) {
+          echo $author . ", ";
+      }
 
+      echo "\n";
       /*if ($links->length > 0) {
 
           foreach ($links as $link) {
