@@ -14,80 +14,99 @@ class Scrapper {
    * Loads paper information from the HTML and returns the array with the data.
    */
   public function scrap(\DOMDocument $dom): array {
+      $data = [];
       $xPath = new \DOMXPath($dom);
       $links = $xPath->query("//a[contains(@class, 'paper-card')]");
       $ids = $xPath->query("//div[contains(@class, 'volume-info')]");
       $linkIterator = 0;
 
-      foreach ($links as $link) {
+      if($links->length > 0) {
 
-          $href = $link->getAttribute('href');
-          $linkHtml = file_get_contents($href);
+          foreach ($links as $link) {
 
-          $linkDom = new \DOMDocument();
-          $linkDom->loadHTML($linkHtml);
-          $linkXPath = new \DOMXPath($linkDom);
+              $href = $link->getAttribute('href');
+              $linkHtml = file_get_contents($href);
 
-          $id = $ids->item($linkIterator)->nodeValue;
-          $title = $xPath->query("//h4[contains(@class, 'paper-title')]")->item($linkIterator)->nodeValue;
-          $presentationSearch = $xPath->query("//div[contains(@class, 'tags')][1]");
-          $presentationType = $presentationSearch->item($linkIterator)->nodeValue;
-          $linkIterator++;
+              $linkDom = new \DOMDocument();
+              $linkDom->loadHTML($linkHtml);
+              $linkXPath = new \DOMXPath($linkDom);
 
-          $authors = [];
-          $universities = [];
+              $id = intval($ids->item($linkIterator)->nodeValue);
+              $title = $xPath->query("//h4[contains(@class, 'paper-title')]")->item($linkIterator)->nodeValue;
+              $presentationSearch = $xPath->query("//div[contains(@class, 'tags')][1]");
+              $presentationType = $presentationSearch->item($linkIterator)->nodeValue;
+              $linkIterator++;
 
-          if ($presentationType == "Poster Presentation") {
-              $authorsSearch = $linkXPath->query("//div[contains(@class, 'authors-wrapper')]//li");
-              $authorsQuantity = $authorsSearch->length / 2;
+              $authors = [];
+              $universities = [];
 
-              for ($i = 0; $i < $authorsQuantity; $i++) {
-                  $authors[] = $authorsSearch->item($i)->nodeValue;
+              if ($presentationType == "Poster Presentation") {
+                  $authorsSearch = $linkXPath->query("//div[contains(@class, 'authors-wrapper')]//li");
+                  $authorsQuantity = $authorsSearch->length / 2;
+
+                  for ($i = 0; $i < $authorsQuantity; $i++) {
+                      $author = trim($authorsSearch->item($i)->nodeValue);
+                      if ($author !== "") {
+                          $authors[] = $author;
+                      }
+                  }
+
+                  $universitiesSearch = $linkXPath->query("//div[contains(@class, 'f-gray')]//li");
+                  $universitiesQuantity = $universitiesSearch->length / 2;
+
+                  for ($i = 0; $i < $universitiesQuantity; $i++) {
+                      $university = trim($universitiesSearch->item($i)->nodeValue);
+                      if ($university !== "") {
+                          $universities[] = $university;
+                      }
+                  }
+
+              } else {
+                  $authorsSearch = $linkXPath->query("//div[contains(@class, 'row')]//ul[contains(@class, 'list')]//li");
+                  $authorsQuantity = $authorsSearch->length / 2;
+
+                  for ($i = 0; $i < $authorsQuantity; $i++) {
+                      $author = trim($authorsSearch->item($i)->nodeValue);
+                      if ($author !== "") {
+                          $authors[] = $author;
+                      }
+                  }
+
+                  $universitiesSearch = $linkXPath->query("//div[contains(@class, 'panel-body')]//div[contains(@class, 'form-group')]//li");
+
+                  for ($i = 0; $i < $universitiesSearch->length; $i++) {
+                      $university = trim($universitiesSearch->item($i)->nodeValue);
+                      if ($university !== "") {
+                          $universities[] = $university;
+                      }
+                  }
               }
 
-              $universitiesSearch = $linkXPath->query("//div[contains(@class, 'f-gray')]//li");
-              $universitiesQuantity = $universitiesSearch->length / 2;
+              $universities_dict = [];
 
-              for ($i = 0; $i < $universitiesQuantity; $i++) {
-                  $universities[] = $universitiesSearch->item($i)->nodeValue;
-              }
-          }
-          else {
-              $authorsSearch = $linkXPath->query("//div[contains(@class, 'row')]//ul[contains(@class, 'list')]//li");
-              $authorsQuantity = $authorsSearch->length / 2;
-
-              for ($i = 0; $i < $authorsQuantity; $i++) {
-                  $authors[] = $authorsSearch->item($i)->nodeValue;
+              foreach ($universities as $university) {
+                  $number = intval(substr($university, 0, 2));
+                  $name = substr($university, 2);
+                  $universities_dict[$number] = $name;
               }
 
-              $universitiesSearch = $linkXPath->query("//div[contains(@class, 'panel-body')]//div[contains(@class, 'form-group')]//li");
-              for ($i = 0; $i < $universitiesSearch->length; $i++) {
-                  $universities[] = $universitiesSearch->item($i)->nodeValue;
-              }
+              $authorsWithUniversities = array_values(array_map(function($author) use ($universities_dict) {
+                  $completeName = explode(" ", $author);
+                  $universityNumber = $completeName[count($completeName) - 1];
+
+                  if ($universityNumber == "Login") {
+                      return new Person("UNKNOWN", "UNKNOWN");
+                  } else {
+                      $authorName = implode(" ", array_slice($completeName, 0, -1));
+                      return new Person($authorName, $universities_dict[$universityNumber]);
+                  }
+              }, $authors));
+
+              $data[] = new Paper($id, $title, $presentationType, $authorsWithUniversities);
           }
-
-
-
-          echo "\nId: " . $id . "\n";
-          echo "Title: " . $title . "\n";
-          echo "Presentation Type: " . $presentationType . "\n";
-          echo "Authors: ";
-
-          foreach ($authors as $author) {
-              echo $author . ", ";
-          }
-          echo "\n";
-
-          echo "Universities: ";
-          foreach ($universities as $university) {
-              echo $university . ", ";
-          }
-          echo "\n";
-
+      } else {
+          print_r("Nothing was found");
       }
-
-      echo "\n";
-
-      return [];
+      return $data;
   }
 }
