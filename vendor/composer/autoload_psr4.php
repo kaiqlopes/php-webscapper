@@ -19,4 +19,5 @@ return array(
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Chuva\\Tests\\' => array($baseDir . '/tests'),
     'Chuva\\Php\\' => array($baseDir . '/src'),
+    'Box\\Spout\\' => array($vendorDir . '/box/spout/src/Spout'),
 );

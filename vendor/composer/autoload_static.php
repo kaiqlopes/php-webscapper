@@ -45,6 +45,10 @@ class ComposerStaticInit6bcde244aa0847ba96e3caf186f92626
             'Chuva\\Tests\\' => 12,
             'Chuva\\Php\\' => 10,
         ),
+        'B' => 
+        array (
+            'Box\\Spout\\' => 10,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -99,6 +103,10 @@ class ComposerStaticInit6bcde244aa0847ba96e3caf186f92626
         'Chuva\\Php\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Box\\Spout\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/box/spout/src/Spout',
         ),
     );
 
