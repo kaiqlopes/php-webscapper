@@ -19,7 +19,8 @@
         "drupal/coder": "8.3.x-dev",
       "ext-libxml": "*",
       "ext-dom": "*",
-        "box/spout": "^3.3"
+        "box/spout": "^3.3",
+      "ext-curl": "*"
     },
     "config": {
         "allow-plugins": {
