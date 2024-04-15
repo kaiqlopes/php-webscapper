@@ -3,7 +3,7 @@
         'name' => 'chuva-inc/exercicios-2023',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'cd58841b7a45b2b00e2287c9c102144b485107c1',
+        'reference' => 'dc9b21d4fb4d459e906d9aaa918b20ea74365693',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'chuva-inc/exercicios-2023' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'cd58841b7a45b2b00e2287c9c102144b485107c1',
+            'reference' => 'dc9b21d4fb4d459e906d9aaa918b20ea74365693',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
