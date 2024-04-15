@@ -3,7 +3,7 @@
         'name' => 'chuva-inc/exercicios-2023',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a5dda5d2a133b91e116a69da5efc5032fffea4f1',
+        'reference' => 'a4d98356dcbf1d9ba880493dfa27d0af088664d3',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'chuva-inc/exercicios-2023' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a5dda5d2a133b91e116a69da5efc5032fffea4f1',
+            'reference' => 'a4d98356dcbf1d9ba880493dfa27d0af088664d3',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -152,7 +152,7 @@
         'phpunit/phpunit' => array(
             'pretty_version' => '10.5.x-dev',
             'version' => '10.5.9999999.9999999-dev',
-            'reference' => 'c1f736a473d21957ead7e94fcc029f571895abf5',
+            'reference' => '835df1709ac6c968ba34bf23f3c30e5d5a266de8',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
@@ -305,7 +305,7 @@
         'sirbrillig/phpcs-variable-analysis' => array(
             'pretty_version' => '2.x-dev',
             'version' => '2.9999999.9999999.9999999-dev',
-            'reference' => 'c019db09aafe18c0d929f9c55a47b55c5698f438',
+            'reference' => 'ca242a0b7309e0f9d1f73b236e04ecf4ca3248d0',
             'type' => 'phpcodesniffer-standard',
             'install_path' => __DIR__ . '/../sirbrillig/phpcs-variable-analysis',
             'aliases' => array(),
@@ -325,7 +325,7 @@
         'squizlabs/php_codesniffer' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '37af3829c9f33a441781ae7a164f2b21d37ff74f',
+            'reference' => '30b3148b302aaba28d72bdb2432b144ff9d47751',
             'type' => 'library',
             'install_path' => __DIR__ . '/../squizlabs/php_codesniffer',
             'aliases' => array(
